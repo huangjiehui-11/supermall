@@ -1,13 +1,16 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners="banners"/>
-    <recommend-view :recommends="recommends"/>
-    <feature-view/>
-    <tab-control class="tab-control"
-                 :titles="['流行', '新款', '精选']"
-                 @tabClick="tabClick"/>
-    <goods-list :goods="showGoods"/>
+
+    <scroll class="wrapper">
+      <home-swiper :banners="banners"/>
+      <recommend-view :recommends="recommends"/>
+      <feature-view/>
+      <tab-control class="tab-control"
+                   :titles="['流行', '新款', '精选']"
+                   @tabClick="tabClick"/>
+      <goods-list :goods="showGoods"/>
+    </scroll>
 
   </div>
 </template>
@@ -21,6 +24,7 @@
   import NavBar from "components/common/navbar/NavBar";
   import TabControl from "components/content/tabControl/TabControl";
   import GoodsList from "components/content/goods/GoodsList";
+  import Scroll from "components/common/scroll/Scroll";
   //方法
   import { getHomeMultidata, getHomeGoods } from "network/home";
 
@@ -33,7 +37,8 @@
       FeatureView,
       NavBar,
       TabControl,
-      GoodsList
+      GoodsList,
+      Scroll
     },
     data() {
       return {
@@ -103,6 +108,9 @@
 <style scoped>
   #home {
     padding-top: 44px;
+    /*vh -> viewport height视窗高度 100vh->100% viewport height*/
+    height: 100vh;
+    position: relative;
   }
 
   .home-nav {
@@ -120,5 +128,14 @@
     position: sticky;
     top: 44px;
     z-index: 9;
+  }
+
+  .wrapper {
+    overflow: hidden;
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
   }
 </style>
