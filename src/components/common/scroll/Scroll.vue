@@ -30,6 +30,7 @@
     },
     mounted() {
       // 1.创建BScroll对象
+      //要在mounted里面初始化，因为只有挂载了实例才能进行元素的绑定
       this.scroll = new BScroll(this.$refs.wrapper, {
         click: true,
         probeType: this.probeType,
@@ -50,10 +51,15 @@
     },
     methods: {
       scrollTo(x, y, time=500) {
-        this.scroll.scrollTo(x, y, time)
+        //加上this.scroll确保scroll有先初始化成功，才能调用scrollTo方法
+        this.scroll && this.scroll.scrollTo(x, y, time)
       },
       finishPullUp() {
         this.scroll.finishPullUp()
+      },
+      refresh() {
+        //加上this.scroll确保scroll有先初始化成功，才能调用refresh方法
+        this.scroll && this.scroll.refresh()
       }
     }
   }

@@ -74,6 +74,14 @@
       this.getHomeGoods('pop')
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
+
+    },
+    mounted() {
+      // 3.监听item中图片加载完成
+      //有$refs，所以得放在mounted里
+      this.$bus.$on('itemImageLoad', () => {
+        this.$refs.scroll.refresh()
+      })
     },
     methods: {
       /**
@@ -117,6 +125,7 @@
       getHomeGoods(type) {
         const page = this.goods[type].page + 1
         getHomeGoods(type, page).then(res => {
+          //...语法：相当于 let item of res.data.list
           this.goods[type].list.push(...res.data.list)
           this.goods[type].page +=1
 
