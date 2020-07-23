@@ -79,14 +79,25 @@
     mounted() {
       // 3.监听item中图片加载完成
       //有$refs，所以得放在mounted里
+      const refresh = this.debounced(this.$refs.scroll.refresh, 50)
       this.$bus.$on('itemImageLoad', () => {
-        this.$refs.scroll.refresh()
+        refresh()
       })
     },
     methods: {
       /**
        * 事件监听相关的方法
        */
+      //封装防抖函数
+      debounced(func, wait) {
+        let timer = null
+        return function(...args) {
+          clearTimeout(timer)
+          timer = setTimeout(() => {
+            func.apply(this, args)
+          }, wait)
+        }
+      },
       tabClick(index) {
         switch (index) {
           case 0:
