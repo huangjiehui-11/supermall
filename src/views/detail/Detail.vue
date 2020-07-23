@@ -1,9 +1,11 @@
 <template>
   <div id="detail">
-    <detail-nav-bar/>
-    <detail-swiper :top-images="topImages"/>
-    <detail-base-info :goods="goods"/>
-    <detail-shop-info :shop="shop"/>
+    <detail-nav-bar class="detail-nav"/>
+    <scroll class="wrapper">
+      <detail-swiper :top-images="topImages"/>
+      <detail-base-info :goods="goods"/>
+      <detail-shop-info :shop="shop"/>
+    </scroll>
   </div>
 </template>
 
@@ -13,6 +15,8 @@
   import DetailBaseInfo from "./childComps/DetailBaseInfo";
   import DetailShopInfo from "./childComps/DetailShopInfo";
 
+  import Scroll from "components/common/scroll/Scroll";
+
   import { getDetail, Goods, Shop } from "network/detail";
 
   export default {
@@ -21,7 +25,8 @@
       DetailNavBar,
       DetailSwiper,
       DetailBaseInfo,
-      DetailShopInfo
+      DetailShopInfo,
+      Scroll
     },
     data() {
       return {
@@ -53,5 +58,28 @@
 </script>
 
 <style scoped>
+  #detail {
+    position: relative;
+    z-index: 9;
+    background-color: #ffffff;
+    /*因为scroll的最外层确定滚动区域的区域的高度只能是屏幕视图窗口高度，所以要多设置这行代码*/
+    height: 100vh;
+  }
 
+  .wrapper {
+    position: absolute;
+    top: 44px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /*另一种方法：*/
+    /*height: calc(100% - 44px);*/
+  }
+
+  .detail-nav {
+    /*尽量不要使用绝对定位和弹性定位，微调只需要用相对定位*/
+    position: relative;
+    z-index: 9;
+    background-color: #ffffff;
+  }
 </style>

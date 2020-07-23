@@ -52,7 +52,6 @@
 
   .active {
     color: var(--color-high-text);
-    border-bottom: 2px solid var(--color-tint);
   }
 
   .back img {
