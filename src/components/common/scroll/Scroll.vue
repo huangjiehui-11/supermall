@@ -38,7 +38,7 @@
       })
 
       // 2.监听滚动的位置
-      if (this.probeType ===2 || this.probeType ===3) {
+      if (this.probeType === 2 || this.probeType === 3) {
         this.scroll.on('scroll', (position) => {
           // console.log(position);
           this.$emit('scroll', position)
@@ -59,7 +59,7 @@
         this.scroll && this.scroll.scrollTo(x, y, time)
       },
       finishPullUp() {
-        this.scroll.finishPullUp()
+        this.scroll && this.scroll.finishPullUp()
       },
       refresh() {
         //加上this.scroll确保scroll有先初始化成功，才能调用refresh方法

@@ -8,7 +8,7 @@
                  v-show="isTabFixed"/>
     <scroll class="wrapper"
             ref="scroll"
-            :probe-type="3"
+            :probe-type=3
             @scroll="contentScroll"
             :pull-up-load="true"
             @pullingUp="loadMore">
@@ -38,7 +38,7 @@
   import BackTop from "components/content/backTop/BackTop";
   //方法
   import { getHomeMultidata, getHomeGoods } from "network/home";
-  import {debounced} from "common/utils";
+  import { debounced } from "common/utils";
 
 
   export default {
@@ -84,6 +84,7 @@
     deactivated() {
       //离开路由时记录当前的位置
       this.saveY = this.$refs.scroll.getScrollY()
+      //this.saveY = -2019
     },
     created() {
       // 1.请求多个数据
