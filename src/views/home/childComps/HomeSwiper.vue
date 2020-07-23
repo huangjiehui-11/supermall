@@ -2,7 +2,8 @@
   <swiper>
     <swiper-item v-for="item in banners">
       <a :href="item.link">
-        <img :src="item.image" alt="">
+        <!--load属性是用来监听图片的加载-->
+        <img :src="item.image" alt="" @load="imageLoad">
       </a>
     </swiper-item>
   </swiper>
@@ -21,9 +22,23 @@
         }
       }
     },
+    data() {
+      return {
+        isLoad: false
+      }
+    },
     components: {
       Swiper,
       SwiperItem
+    },
+    methods: {
+      imageLoad() {
+        //通过设置isLoad这个变量，来控制只发射一个$emit，只需要加载一张图片就可以确定高度
+        if (!this.isLoad) {
+          this.$emit( 'swiperImageLoad')
+          this.isLoad = true
+        }
+      }
     }
   }
 </script>

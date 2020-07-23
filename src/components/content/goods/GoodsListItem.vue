@@ -1,5 +1,6 @@
 <template>
   <div class="goods-item">
+    <!--load属性是用来监听图片的加载-->
     <img :src="goodsItem.show.img" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
