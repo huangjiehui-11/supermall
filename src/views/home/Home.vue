@@ -65,13 +65,25 @@
         currentType: 'pop',
         isShowBackTop: false,
         taboffsetTop: 0,
-        isTabFixed: false
+        isTabFixed: false,
+        saveY: 0
       }
     },
     computed: {
       showGoods() {
         return this.goods[this.currentType].list
       }
+    },
+    activated() {
+      //第三个参数是滚回指定位置的时间，要马上回去，所以设置为0
+      //路由处于活跃时滚回到这个位置
+      this.$refs.scroll.scrollTo(0, this.saveY, 0)
+      //回来时进行一次刷新
+      this.$refs.scroll.refresh()
+    },
+    deactivated() {
+      //离开路由时记录当前的位置
+      this.saveY = this.$refs.scroll.getScrollY()
     },
     created() {
       // 1.请求多个数据

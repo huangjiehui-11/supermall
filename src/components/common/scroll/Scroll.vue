@@ -64,6 +64,10 @@
       refresh() {
         //加上this.scroll确保scroll有先初始化成功，才能调用refresh方法
         this.scroll && this.scroll.refresh()
+      },
+      getScrollY() {
+        //加上this.scroll确保scroll有先初始化成功，否则放回最原始的位置
+        return this.scroll ? this.scroll.y : 0
       }
     }
   }
