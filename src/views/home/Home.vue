@@ -37,8 +37,8 @@
   import Scroll from "components/common/scroll/Scroll";
   import BackTop from "components/content/backTop/BackTop";
   //方法
-  import { getHomeMultidata, getHomeGoods } from "network/home";
-  import { debounced } from "common/utils";
+  import {getHomeMultidata, getHomeGoods} from "network/home";
+  import {itemListenerMixin} from "common/mixin";
 
 
   export default {
@@ -53,6 +53,9 @@
       Scroll,
       BackTop
     },
+    mixins: [
+      itemListenerMixin
+    ],
     data() {
       return {
         banners: [],
@@ -82,11 +85,15 @@
       this.$refs.scroll.refresh()
     },
     deactivated() {
-      //离开路由时记录当前的位置
+      // 1.离开路由时记录当前的位置
       this.saveY = this.$refs.scroll.getScrollY()
       //this.saveY = -2019
       //修复保持首页位置的bug，因为轮播图和better-scroll都有用到translate会相互影响，所以离开时停掉轮播图
       this.$refs.homeswiper.$refs.a.stopTimer()
+
+      // 2.取消全局事件的监听
+      //$buf.$bus第一个参数是事件，第二个参数必须传入一个函数，告诉取消这个事件里的哪一个函数，不然这个事件里的所有函数都会被取消
+      this.$bus.$off('itemImageLoad', this.itemImgListener )
     },
     created() {
       // console.log('home created');
@@ -101,12 +108,7 @@
 
     },
     mounted() {
-      // 1.监听item中图片加载完成
-      //有$refs，所以得放在mounted里
-      const refresh = debounced(this.$refs.scroll.refresh, 50)
-      this.$bus.$on('itemImageLoad', () => {
-        refresh()
-      })
+
     },
     methods: {
       /**
