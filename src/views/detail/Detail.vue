@@ -95,8 +95,16 @@
       })
     },
     methods: {
+      //监听图片加载完成重新刷新scroll
+
+      // 1.利用if判断的处理方式
+      // imageLoad() {
+      //   this.$refs.scroll.refresh()
+      // }
+
+      // 2.利用防抖函数的处理方式
       imageLoad() {
-        this.$refs.scroll.refresh()
+        this.refresh()
       }
     },
     mounted() {

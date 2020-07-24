@@ -8,7 +8,11 @@
     </div>
     <div class="info-key">{{detailInfo.detailImage[0].key}}</div>
     <div class="info-list">
-      <img v-for="(item, index) in detailInfo.detailImage[0].list" :key="index" :src="item" @load="imgLoad" alt="">
+      <img v-for="(item, index) in detailInfo.detailImage[0].list"
+           :key="index"
+           :src="item"
+           @load="imgLoad"
+           alt="">
     </div>
   </div>
 </template>
@@ -29,11 +33,14 @@
     },
     methods: {
 	    imgLoad() {
-        // 判断, 所有的图片都加载完了, 那么进行一次回调就可以了.
-        //++this.counter:先加再对比
-        if (++this.counter === this.imagesLength) {
-          this.$emit('imageLoad');
-        }
+        // 1.判断, 所有的图片都加载完了, 最后进行一次事件发射就可以了.
+        // ++this.counter:先加再对比
+        // if (++this.counter === this.imagesLength) {
+        //   this.$emit('imageLoad');
+        // }
+
+        // 2.利用防抖函数
+        this.$emit('imageLoad');
 	    }
     },
     //watch监听props里detailInfo属性的变化
