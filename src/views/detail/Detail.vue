@@ -7,6 +7,7 @@
       <detail-shop-info :shop="shop"/>
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/>
       <detail-param-info :param-info="paramInfo"/>
+      <detail-comment-info :comment-info="commentInfo"/>
     </scroll>
   </div>
 </template>
@@ -18,6 +19,7 @@
   import DetailShopInfo from "./childComps/DetailShopInfo";
   import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
   import DetailParamInfo from "./childComps/DetailParamInfo";
+  import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
   import Scroll from "components/common/scroll/Scroll";
 
@@ -32,6 +34,7 @@
       DetailShopInfo,
       DetailGoodsInfo,
       DetailParamInfo,
+      DetailCommentInfo,
       Scroll,
       GoodsParam
     },
@@ -42,7 +45,8 @@
         goods: {},
         shop: {},
         detailInfo: {},
-        paramInfo: {}
+        paramInfo: {},
+        commentInfo: {}
       }
     },
     created() {
@@ -51,9 +55,11 @@
 
       // 2.根据iid请求详情数据
       getDetail(this.iid).then(res => {
-        // 1.获取顶部的图片轮播数据
-        // console.log(res)
+
         const data = res.result;
+        // console.log(res)
+
+        // 1.获取顶部的图片轮播数据
         this.topImages = data.itemInfo.topImages
 
         // 2.创建商品信息的对象
@@ -67,6 +73,11 @@
 
         // 5.获取参数的信息
         this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule)
+
+        // 6.获取评论的信息
+        if (data.rate.cRate !== 0) {
+          this.commentInfo = data.rate.list[0]
+        }
       })
     },
     methods: {

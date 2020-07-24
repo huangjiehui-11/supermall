@@ -85,6 +85,7 @@
       //离开路由时记录当前的位置
       this.saveY = this.$refs.scroll.getScrollY()
       //this.saveY = -2019
+      //修复保持首页位置的bug，因为轮播图和better-scroll都有用到translate会相互影响，所以离开时停掉轮播图
       this.$refs.homeswiper.$refs.a.stopTimer()
     },
     created() {
