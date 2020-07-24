@@ -1,5 +1,5 @@
 <template>
-  <swiper>
+  <swiper ref="a">
     <swiper-item v-for="item in banners">
       <a :href="item.link">
         <!--load属性是用来监听图片的加载-->

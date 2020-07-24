@@ -12,7 +12,7 @@
             @scroll="contentScroll"
             :pull-up-load="true"
             @pullingUp="loadMore">
-      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad" ref="homeswiper"/>
       <recommend-view :recommends="recommends"/>
       <feature-view/>
       <tab-control :titles="['流行', '新款', '精选']"
@@ -85,8 +85,11 @@
       //离开路由时记录当前的位置
       this.saveY = this.$refs.scroll.getScrollY()
       //this.saveY = -2019
+      this.$refs.homeswiper.$refs.a.stopTimer()
     },
     created() {
+      // console.log('home created');
+
       // 1.请求多个数据
       this.getHomeMultidata()
 
