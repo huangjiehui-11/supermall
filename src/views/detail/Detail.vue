@@ -130,7 +130,7 @@
       })
     },
     methods: {
-      //监听图片加载完成重新刷新scroll
+      // 监听图片加载完成重新刷新scroll，解决滚动卡住的bug(scroll-height)
 
       // 1.利用if判断的处理方式
       // imageLoad() {
@@ -139,8 +139,7 @@
 
       // 2.利用防抖函数的处理方式
       imageLoad() {
-        this.refresh()
-
+        this.$refs.scroll.refresh()
         this.getThemeTopY()
       },
 

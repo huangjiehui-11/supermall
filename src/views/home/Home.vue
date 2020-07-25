@@ -79,7 +79,7 @@
       //第三个参数是滚回指定位置的时间，要马上回去，所以设置为0
       //路由处于活跃时滚回到这个位置
       this.$refs.scroll.scrollTo(0, this.saveY, 0)
-      //回来时进行一次刷新
+      //回来时进行一次刷新,解决滚动卡住的bug（scrollHeight）
       this.$refs.scroll.refresh()
     },
     deactivated() {
