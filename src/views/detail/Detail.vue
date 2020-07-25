@@ -1,14 +1,19 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav"/>
-    <scroll class="wrapper" ref="scroll">
+    <detail-nav-bar class="detail-nav" @titleClick="titleClick" ref="nav"/>
+    <scroll class="wrapper"
+            ref="scroll"
+            :probe-type="3"
+            @scroll="contentScroll">
+      <!--父组件向子组件通信要用驼峰，子组件接收属性：topImages 在父组件要用驼峰：top-images-->
+      <!--子组件向父组件通信不用驼峰-->
       <detail-swiper :top-images="topImages"/>
       <detail-base-info :goods="goods"/>
       <detail-shop-info :shop="shop"/>
       <detail-goods-info :detail-info="detailInfo" @imageLoad="imageLoad"/>
-      <detail-param-info :param-info="paramInfo"/>
-      <detail-comment-info :comment-info="commentInfo"/>
-      <goods-list :goods="recommends"/>
+      <detail-param-info ref="params" :param-info="paramInfo"/>
+      <detail-comment-info ref="comment" :comment-info="commentInfo"/>
+      <goods-list ref="recommend" :goods="recommends"/>
     </scroll>
   </div>
 </template>
@@ -27,6 +32,7 @@
 
   import {getDetail, Goods, Shop, GoodsParam, getRecommend} from "network/detail";
   import {itemListenerMixin} from "common/mixin"
+  import {debounced} from "../../common/utils";
 
   export default {
     name: "Detail",
@@ -54,7 +60,10 @@
         detailInfo: {},
         paramInfo: {},
         commentInfo: {},
-        recommends: []
+        recommends: [],
+        themeTopYs: [],
+        getThemeTopY: null,
+        currentIndex: 0
       }
     },
     created() {
@@ -86,6 +95,27 @@
         if (data.rate.cRate !== 0) {
           this.commentInfo = data.rate.list[0]
         }
+
+        //给getThemeTopY赋值
+        this.getThemeTopY = debounced(() => {
+          this.themeTopYs = []
+          this.themeTopYs.push(0);
+          this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+          this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+          this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+          // console.log(this.themeTopYs)
+        }, 100)
+        // this.$nextTick(() => {
+          // 根据最新的数据，对应的DOM是已经被渲染出来的
+          // 但是图片依然是没有加载完（目前获取的offsetTop不包含其中的图片）
+          // offsetTop值不对的时候，都是因为图片的问题
+          // this.themeTopYs = []
+          // this.themeTopYs.push(0);
+          // this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+          // this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+          // this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+          // console.log(this.themeTopYs)
+        // })
       })
 
       // 3.请求推荐数据
@@ -105,10 +135,47 @@
       // 2.利用防抖函数的处理方式
       imageLoad() {
         this.refresh()
+
+        this.getThemeTopY()
+      },
+
+      titleClick(index) {
+        this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 300)
+      },
+
+      contentScroll(position) {
+        // 1.获取y值
+        const positionY = -position.y
+
+        // 2.positionY和主题中值进行对比
+        // [0, 7938, 9120, 9452]
+        // positionY 在 0 和 7938 之间，index = 0
+        // positionY 在 7938 和 9120 之间，index = 1
+        // positionY 在 9120 和 9452 之间，index = 2
+        // positionY 大于等于9452，index = 3
+        let length = this.themeTopYs.length
+        for (let i =0; i < length; i++) {
+          if (this.currentIndex != i &&
+            ((i < length -1 && positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i+1])
+              || ( i === length - 1 && positionY >= this.themeTopYs[i])))
+          {
+            this.currentIndex = i;
+            this.$refs.nav.currentIndex = this.currentIndex
+          }
+        }
       }
     },
     mounted() {
 
+    },
+    updated() {
+      // //不可行
+      // this.themeTopYs = []
+      // this.themeTopYs.push(0);
+      // this.themeTopYs.push(this.$refs.params.$el.offsetTop);
+      // this.themeTopYs.push(this.$refs.comment.$el.offsetTop);
+      // this.themeTopYs.push(this.$refs.recommend.$el.offsetTop);
+      // console.log(this.themeTopYs)
     },
     destroyed() {
       this.$bus.$off('itemImageLoad', this.itemImgListener )
