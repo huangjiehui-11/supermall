@@ -15,6 +15,7 @@
       <detail-comment-info ref="comment" :comment-info="commentInfo"/>
       <goods-list ref="recommend" :goods="recommends"/>
     </scroll>
+    <detail-bottom-bar/>
   </div>
 </template>
 
@@ -27,6 +28,7 @@
   import DetailParamInfo from "./childComps/DetailParamInfo";
   import DetailCommentInfo from "./childComps/DetailCommentInfo";
   import GoodsList from "components/content/goods/GoodsList";
+  import DetailBottomBar from "./childComps/DetailBottomBar";
 
   import Scroll from "components/common/scroll/Scroll";
 
@@ -44,9 +46,10 @@
       DetailGoodsInfo,
       DetailParamInfo,
       DetailCommentInfo,
+      GoodsList,
+      DetailBottomBar,
       Scroll,
-      GoodsParam,
-      GoodsList
+
     },
     mixins: [
       itemListenerMixin
