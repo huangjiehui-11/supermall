@@ -1,4 +1,5 @@
 import {debounced} from "common/utils";
+import BackTop from "components/content/backTop/BackTop";
 
 export const itemListenerMixin = {
   data() {
@@ -17,5 +18,27 @@ export const itemListenerMixin = {
       this.refresh()
     }
     this.$bus.$on('itemImageLoad', this.itemImgListener)
+  }
+}
+
+export const backTopMixin = {
+  components: {
+    BackTop
+  },
+  data() {
+    return {
+      isShowBackTop: false,
+    }
+  },
+  methods: {
+    backClick() {
+      //直接调用scroll组件里的scrollTo方法
+      //scrollTo(x轴位置，y轴位置，在多少毫秒内返回指定位置)
+      this.$refs.scroll.scrollTo(0, 0)
+    },
+    listernShowBackTop(position) {
+      // 判断BackTop是否显示
+      this.isShowBackTop = (-position.y) > 1000
+    }
   }
 }
