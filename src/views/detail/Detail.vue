@@ -52,7 +52,6 @@
       GoodsList,
       DetailBottomBar,
       Scroll,
-
     },
     mixins: [
       itemListenerMixin,
@@ -70,7 +69,9 @@
         recommends: [],
         themeTopYs: [],
         getThemeTopY: null,
-        currentIndex: 0
+        currentIndex: 0,
+        // message: '',
+        // show: false
       }
     },
     created() {
@@ -189,7 +190,7 @@
         // this.$store.cartList.push(product)
         // this.$store.commit('addCart', product)
         this.addCart(product).then(res => {
-          console.log(res);
+          this.$toast.show(res, 1500)
         })
         // this.$store.dispatch('addCart', product).then(res => {
         //   console.log(res);
