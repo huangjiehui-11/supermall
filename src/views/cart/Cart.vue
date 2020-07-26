@@ -9,12 +9,16 @@
       <cart-list/>
     </scroll>
     <!--底部的汇总-->
+    <cart-bottom-bar/>
   </div>
 </template>
 
 <script>
   import NavBar from 'components/common/navbar/NavBar'
-  import CartList from "./childComps/CartList";
+
+  import CartList from "./childComps/CartList"
+  import CartBottomBar from "./childComps/CartBottomBar"
+
 
   //mapGetters辅助函数仅仅是将store中的getter映射到局部计算属性
   import { mapGetters } from 'vuex';
@@ -26,6 +30,7 @@
     components: {
       NavBar,
       CartList,
+      CartBottomBar,
       Scroll
     },
     computed: {
@@ -50,7 +55,7 @@
   }
 
   .wrapper {
-    height: calc(100% - 44px - 49px);
+    height: calc(100% - 44px - 49px - 40px);
     overflow: hidden;
   }
 
