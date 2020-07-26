@@ -37,6 +37,8 @@
   import {itemListenerMixin, backTopMixin} from "common/mixin"
   import {debounced} from "../../common/utils";
 
+  import {mapActions} from 'vuex'
+
   export default {
     name: "Detail",
     components: {
@@ -130,6 +132,8 @@
       })
     },
     methods: {
+      ...mapActions(['addCart']),
+
       // 监听图片加载完成重新刷新scroll，解决滚动卡住的bug(scroll-height)
 
       // 1.利用if判断的处理方式
@@ -181,10 +185,15 @@
         product.price = this.goods.realPrice;
         product.iid = this.iid;
 
-        // 2.将商品添加到购物车
+        // 2.将商品添加到购物车(Promise, mapActions)
         // this.$store.cartList.push(product)
         // this.$store.commit('addCart', product)
-        this.$store.dispatch('addCart', product)
+        this.addCart(product).then(res => {
+          console.log(res);
+        })
+        // this.$store.dispatch('addCart', product).then(res => {
+        //   console.log(res);
+        // })
       }
     },
     mounted() {
